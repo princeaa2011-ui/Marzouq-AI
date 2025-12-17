@@ -62,13 +62,28 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 ## 🎮 التشغيل
 
-### تشغيل محلي
+### تشغيل محلي (للتطوير)
 
 ```bash
+# تأكد من تفعيل FLASK_ENV=development في ملف .env
 python app.py
 ```
 
 السيرفر سيشتغل على `http://localhost:5000`
+
+### تشغيل في الإنتاج
+
+للإنتاج، استخدم **gunicorn** بدلاً من Flask development server:
+
+```bash
+gunicorn -w 4 -b 0.0.0.0:5000 app:app
+```
+
+أو مع المزيد من الخيارات:
+
+```bash
+gunicorn -w 4 -b 0.0.0.0:5000 --timeout 120 --access-logfile - app:app
+```
 
 ### استخدام ngrok للتطوير
 

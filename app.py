@@ -186,6 +186,7 @@ if __name__ == '__main__':
     # تحقق من وضع التطوير
     if os.getenv('FLASK_ENV') == 'development':
         # وضع التطوير - فقط للتطوير المحلي
+        # ملاحظة: debug=True آمن هنا لأنه مقيد على localhost فقط
         print("🔧 وضع التطوير - التشغيل على localhost فقط")
         app.run(host='127.0.0.1', port=port, debug=True)
     else:
