@@ -274,7 +274,7 @@ class GrokClient(BaseAPIClient):
     def __init__(self):
         super().__init__(
             api_name='Grok',
-            base_url='https://api.x.ai/v1',  # Placeholder URL
+            base_url='https://api.x.ai/v1',  # TODO: Replace with actual Grok API URL when available
             api_key=APIConfig.GROK_API_KEY,
             timeout=60  # Image generation takes longer
         )
