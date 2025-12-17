@@ -149,6 +149,13 @@ def process_speech():
             timeout=5
         )
         response.append(gather)
+        
+        # الوداع إذا ما رد
+        response.say(
+            'يلا، مع السلامة!',
+            language='ar',
+            voice='Google.ar-XA-Standard-C'
+        )
     else:
         # إذا ما فهم شي
         response.say(
@@ -156,12 +163,6 @@ def process_speech():
             language='ar',
             voice='Google.ar-XA-Standard-C'
         )
-    
-    response.say(
-        'يلا، مع السلامة!',
-        language='ar',
-        voice='Google.ar-XA-Standard-C'
-    )
     
     return Response(str(response), mimetype='text/xml')
 
@@ -181,8 +182,13 @@ def goodbye():
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    app.run(
-        host='0.0.0.0',
-        port=port,
-        debug=os.getenv('FLASK_DEBUG', 'False') == 'True'
-    )
+    debug = os.getenv('FLASK_ENV') == 'development'
+    
+    if debug:
+        # وضع التطوير - فقط للتطوير المحلي
+        app.run(host='127.0.0.1', port=port, debug=True)
+    else:
+        # وضع الإنتاج - استخدم gunicorn بدلاً من ذلك
+        print("تحذير: للإنتاج، استخدم gunicorn بدلاً من python app.py")
+        print("مثال: gunicorn -w 4 -b 0.0.0.0:5000 app:app")
+        app.run(host='0.0.0.0', port=port, debug=False)
