@@ -17,8 +17,18 @@ load_dotenv()
 # إنشاء التطبيق
 app = Flask(__name__)
 
-# إعداد OpenAI
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# متغير عالمي لـ OpenAI client (سيتم تهيئته عند الحاجة)
+client = None
+
+def get_openai_client():
+    """الحصول على OpenAI client (تهيئة كسولة)"""
+    global client
+    if client is None:
+        api_key = os.getenv('OPENAI_API_KEY')
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY not set in environment variables")
+        client = OpenAI(api_key=api_key)
+    return client
 
 # شخصية مرزوق - نفس البرومبت من الـ README
 MARZOUQ_PERSONA = """
@@ -44,7 +54,8 @@ def get_marzouq_response(user_message):
         str: رد مرزوق
     """
     try:
-        response = client.chat.completions.create(
+        ai_client = get_openai_client()
+        response = ai_client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": MARZOUQ_PERSONA},

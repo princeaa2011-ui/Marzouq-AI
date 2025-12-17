@@ -8,4 +8,4 @@ python-dotenv==1.0.0
 
 # أدوات إضافية
 requests==2.31.0
-gunicorn==21.2.0
+gunicorn==22.0.0
