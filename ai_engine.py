@@ -81,8 +81,9 @@ GREETINGS_BY_DIALECT = {
     # مصري - Egyptian (Abdelfattah عبدالفتاح)
     "egyptian": {
         "name": "عبدالفتاح",
-        "greeting": "أهلاً وسهلاً! أنا عبدالفتاح، صاحبك من مصر. عامل إيه؟ أخدمك في إيه؟",
-        "language": "ar-SA"
+        "greeting": "يا اهلا يا اهلا الزيك يابني بص في امكانية انصب عليك والا انت مش في المود؟ ياعمي اذا مقفله روح الغردة وريحنا ربنا ياخذك . ااه عاوز ايه مني",
+        "language": "ar-SA",
+        "tone": "فكاهي خفيف دم"  # Humorous and witty tone
     },
     
     # أردني - Jordanian (Amer عامر)
@@ -95,8 +96,9 @@ GREETINGS_BY_DIALECT = {
     # عراقي - Iraqi (Jasim جاسم)
     "iraqi": {
         "name": "جاسم",
-        "greeting": "أهلاً وسهلاً! أنا جاسم، من العراق. شلونك؟ شنو أساعدك؟",
-        "language": "ar-SA"
+        "greeting": "مرحبا ااغاتي شكو ماكو؟ كيف اخدمك",
+        "language": "ar-SA",
+        "tone": "ودود"  # Friendly tone
     },
     
     # ============ اللهجات الإنجليزية - English Dialects ============
@@ -402,7 +404,7 @@ def detect_saudi_dialect(user_input):
     user_lower = user_input.lower()
     
     # مؤشرات اللهجة المصرية
-    egyptian_indicators = ["ازيك", "عامل ايه", "ازيك", "انت فين", "ايه", "كده", "عايز", "انت بتعمل ايه"]
+    egyptian_indicators = ["ازيك", "عامل ايه", "انت فين", "ايه", "كده", "عايز", "انت بتعمل ايه"]
     
     # مؤشرات اللهجة الأردنية
     jordanian_indicators = ["شو", "كيفك", "هيك", "مش", "بدك", "شو بدك", "كيف حالك"]

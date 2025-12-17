@@ -11,6 +11,15 @@ Utility Functions for Marzouq
 import re
 
 
+# Emoji pattern compiled once at module level for efficiency
+EMOJI_PATTERN = re.compile("["
+    u"\U0001F600-\U0001F64F"  # emoticons
+    u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+    u"\U0001F680-\U0001F6FF"  # transport & map symbols
+    u"\U0001F1E0-\U0001F1FF"  # flags
+    "]+", flags=re.UNICODE)
+
+
 # ========================================
 # كشف اللغة - Language Detection
 # ========================================
@@ -179,14 +188,7 @@ def format_for_speech(text):
     
     # إزالة الإيموجي (قد تسبب مشاكل في TTS)
     # Remove emojis (may cause issues in TTS)
-    emoji_pattern = re.compile("["
-        u"\U0001F600-\U0001F64F"  # emoticons
-        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
-        u"\U0001F1E0-\U0001F1FF"  # flags
-        "]+", flags=re.UNICODE)
-    
-    cleaned = emoji_pattern.sub(r'', text)
+    cleaned = EMOJI_PATTERN.sub(r'', text)
     
     # إزالة المسافات المتعددة
     cleaned = re.sub(r'\s+', ' ', cleaned)
