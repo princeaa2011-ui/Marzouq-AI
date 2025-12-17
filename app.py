@@ -52,6 +52,7 @@ from phone_dialer import generate_dialer_html
 from personality_call import generate_personality_call_html
 from phone_number_creator import generate_phone_creator_html
 from chatgpt_conversation import generate_chatgpt_html, PERSONALITY_PROMPTS
+from document_image_ai import generate_matt_ai_tools_html
 
 # تحميل المتغيرات البيئية - Load environment variables
 load_dotenv()
@@ -106,6 +107,7 @@ def home():
                 <li><strong>/personality-call</strong> - Call between personalities 💬</li>
                 <li><strong>/create-number</strong> - Create custom phone numbers 📱</li>
                 <li><strong>/ai-chat</strong> - ChatGPT conversation with personalities 🤖</li>
+                <li><strong>/matt-ai-tools</strong> - Matt's AI Document & Image Tools 🛠️</li>
             </ul>
             
             <hr>
@@ -472,6 +474,15 @@ def ai_chat():
     ChatGPT conversation with personalities
     """
     return generate_chatgpt_html()
+
+
+@app.route("/matt-ai-tools", methods=["GET"])
+def matt_ai_tools():
+    """
+    أدوات مات الذكية للمستندات والصور
+    Matt's AI tools for documents and images
+    """
+    return generate_matt_ai_tools_html()
 
 
 @app.route("/api/chat", methods=["POST"])
