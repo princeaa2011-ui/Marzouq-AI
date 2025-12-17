@@ -50,6 +50,8 @@ from keyboards import (
 )
 from phone_dialer import generate_dialer_html
 from personality_call import generate_personality_call_html
+from phone_number_creator import generate_phone_creator_html
+from chatgpt_conversation import generate_chatgpt_html, PERSONALITY_PROMPTS
 
 # تحميل المتغيرات البيئية - Load environment variables
 load_dotenv()
@@ -102,6 +104,8 @@ def home():
                 <li><strong>/keyboards</strong> - View Arabic & English keyboards 🎹</li>
                 <li><strong>/phone</strong> - iPhone 17 Max Pro style dialer 📞</li>
                 <li><strong>/personality-call</strong> - Call between personalities 💬</li>
+                <li><strong>/create-number</strong> - Create custom phone numbers 📱</li>
+                <li><strong>/ai-chat</strong> - ChatGPT conversation with personalities 🤖</li>
             </ul>
             
             <hr>
@@ -450,6 +454,94 @@ def personality_call():
     Personality-to-personality calling system
     """
     return generate_personality_call_html()
+
+
+@app.route("/create-number", methods=["GET"])
+def create_number():
+    """
+    منشئ أرقام الهواتف
+    Phone number creator
+    """
+    return generate_phone_creator_html()
+
+
+@app.route("/ai-chat", methods=["GET"])
+def ai_chat():
+    """
+    محادثة ChatGPT مع الشخصيات
+    ChatGPT conversation with personalities
+    """
+    return generate_chatgpt_html()
+
+
+@app.route("/api/chat", methods=["POST"])
+def api_chat():
+    """
+    API endpoint for ChatGPT conversations
+    """
+    try:
+        import openai
+        from openai import OpenAI
+        
+        data = request.get_json()
+        personality = data.get('personality', 'najdi')
+        message = data.get('message', '')
+        history = data.get('history', [])
+        
+        # Get API key from environment
+        api_key = os.getenv('OPENAI_API_KEY')
+        
+        if not api_key:
+            return {
+                "response": "عذراً، لم يتم تكوين مفتاح OpenAI API. يرجى إضافته في ملف .env\n\nSorry, OpenAI API key is not configured. Please add it to .env file.",
+                "error": "API key not found"
+            }
+        
+        # Initialize OpenAI client
+        client = OpenAI(api_key=api_key)
+        
+        # Get personality prompt
+        system_prompt = PERSONALITY_PROMPTS.get(personality, PERSONALITY_PROMPTS['najdi'])
+        
+        # Prepare messages
+        messages = [{"role": "system", "content": system_prompt}]
+        
+        # Add conversation history (limit to last 10 messages to save tokens)
+        if history:
+            messages.extend(history[-10:])
+        
+        # Add current message
+        messages.append({"role": "user", "content": message})
+        
+        # Call OpenAI API
+        response = client.chat.completions.create(
+            model="gpt-4",  # or "gpt-3.5-turbo" for faster/cheaper
+            messages=messages,
+            temperature=0.8,
+            max_tokens=500,
+            top_p=0.9,
+            frequency_penalty=0.3,
+            presence_penalty=0.3
+        )
+        
+        assistant_message = response.choices[0].message.content
+        
+        return {
+            "response": assistant_message,
+            "personality": personality,
+            "success": True
+        }
+        
+    except ImportError:
+        return {
+            "response": "عذراً، مكتبة OpenAI غير مثبتة. يرجى تثبيتها باستخدام: pip install openai\n\nSorry, OpenAI library not installed. Please install it with: pip install openai",
+            "error": "OpenAI library not installed"
+        }
+    except Exception as e:
+        return {
+            "response": f"عذراً، حدث خطأ: {str(e)}\n\nSorry, an error occurred: {str(e)}",
+            "error": str(e)
+        }
 
 
 if __name__ == "__main__":
