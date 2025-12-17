@@ -89,8 +89,9 @@ GREETINGS_BY_DIALECT = {
     # أردني - Jordanian (Amer عامر)
     "jordanian": {
         "name": "عامر",
-        "greeting": "أهلين وسهلين! أنا عامر، من الأردن. كيفك؟ شو بدك؟",
-        "language": "ar-SA"
+        "greeting": "هلا شوبدك يازلمه داخل هيج علينا",
+        "language": "ar-SA",
+        "tone": "فخم تهكمي شبابي"  # Proud sarcastic youth tone
     },
     
     # عراقي - Iraqi (Jasim جاسم)
