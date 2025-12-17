@@ -182,13 +182,19 @@ def goodbye():
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    debug = os.getenv('FLASK_ENV') == 'development'
     
-    if debug:
+    # تحقق من وضع التطوير
+    if os.getenv('FLASK_ENV') == 'development':
         # وضع التطوير - فقط للتطوير المحلي
+        print("🔧 وضع التطوير - التشغيل على localhost فقط")
         app.run(host='127.0.0.1', port=port, debug=True)
     else:
-        # وضع الإنتاج - استخدم gunicorn بدلاً من ذلك
-        print("تحذير: للإنتاج، استخدم gunicorn بدلاً من python app.py")
-        print("مثال: gunicorn -w 4 -b 0.0.0.0:5000 app:app")
-        app.run(host='0.0.0.0', port=port, debug=False)
+        # وضع الإنتاج - استخدم gunicorn
+        print("⚠️  تحذير: للإنتاج، يُفضل استخدام gunicorn:")
+        print(f"   gunicorn -w 4 -b 0.0.0.0:{port} app:app")
+        print("")
+        print("🚀 التشغيل في وضع الإنتاج...")
+        # استخدام werkzeug في الإنتاج فقط للاختبار
+        # في الإنتاج الفعلي، استخدم gunicorn
+        from werkzeug.serving import run_simple
+        run_simple('0.0.0.0', port, app, use_reloader=False, use_debugger=False)
